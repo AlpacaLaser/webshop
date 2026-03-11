@@ -1,0 +1,20 @@
+{
+  "name": "Webshop Dev Environment",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspace",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csdevkit",
+        "angular.ng-template",
+        "ms-azuretools.vscode-docker",
+        "mongodb.mongodb-vscode"
+      ]
+    }
+  },
+
+  "forwardPorts": [4200, 5000, 3000, 27017],
+  "postCreateCommand": "echo 'Environment ready! 🚀'"
+}
