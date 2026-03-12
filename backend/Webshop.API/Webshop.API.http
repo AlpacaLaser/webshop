@@ -1,6 +1,51 @@
-@Webshop.API_HostAddress = http://localhost:5151
+### Változók
+@baseUrl = http://localhost:5151
+@productId = 69b2f65c151d28b589d919f4
 
-GET {{Webshop.API_HostAddress}}/weatherforecast/
+### 1. Összes termék lekérése
+GET {{baseUrl}}/api/product
 Accept: application/json
+
+###
+
+### 2. Új termék létrehozása
+POST {{baseUrl}}/api/product
+Content-Type: application/json
+
+{
+  "name": "Laptop",
+  "description": "Nagy teljesítményű laptop",
+  "price": 299999.99,
+  "category": "Elektronika",
+  "stock": 5,
+  "imageUrl": "https://via.placeholder.com/150"
+}
+
+###
+
+### 3. Egy termék lekérése ID alapján
+GET {{baseUrl}}/api/product/{{productId}}
+Accept: application/json
+
+###
+
+### 4. Termék módosítása
+PUT {{baseUrl}}/api/product/{{productId}}
+Content-Type: application/json
+
+{
+  "id": "{{productId}}",
+  "name": "Laptop Pro",
+  "description": "Frissített leírás",
+  "price": 349999.99,
+  "category": "Elektronika",
+  "stock": 3,
+  "imageUrl": "https://via.placeholder.com/150"
+}
+
+###
+
+### 5. Termék törlése
+DELETE {{baseUrl}}/api/product/{{productId}}
 
 ###
