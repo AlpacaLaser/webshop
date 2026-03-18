@@ -1,1 +1,74 @@
-<p>rick-and-morty works!</p>
+<div class="container mt-4">
+
+  <!-- Fejléc -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-tv"></i> Rick & Morty karakterek</h1>
+    <span class="badge bg-primary fs-6">{{ currentPage }} / {{ totalPages }} oldal</span>
+  </div>
+
+  <!-- Betöltés jelző -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2">Karakterek betöltése...</p>
+  </div>
+
+  <!-- Hibaüzenet -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <i class="bi bi-exclamation-triangle"></i> {{ errorMessage }}
+  </div>
+
+  <!-- Karakter kártyák -->
+  <div *ngIf="!isLoading && !errorMessage" class="row row-cols-1 row-cols-md-4 g-4">
+    <div *ngFor="let character of characters" class="col">
+      <div class="card h-100 shadow-sm">
+        
+        <!-- Karakter kép -->
+        <img [src]="character.image" 
+             class="card-img-top" 
+             [alt]="character.name">
+        
+        <div class="card-body">
+          <!-- Név -->
+          <h6 class="card-title fw-bold">{{ character.name }}</h6>
+          
+          <!-- Státusz -->
+          <span class="badge mb-2" [ngClass]="getStatusClass(character.status)">
+            {{ character.status }}
+          </span>
+          
+          <!-- Adatok -->
+          <p class="card-text small text-muted mb-1">
+            <i class="bi bi-person"></i> {{ character.species }}
+          </p>
+          <p class="card-text small text-muted mb-1">
+            <i class="bi bi-geo-alt"></i> {{ character.location.name }}
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="!isLoading" class="d-flex justify-content-center align-items-center gap-3 mt-4 mb-4">
+    
+    <!-- Előző gomb -->
+    <button class="btn btn-outline-primary" 
+            (click)="prevPage()" 
+            [disabled]="currentPage === 1">
+      <i class="bi bi-chevron-left"></i> Előző
+    </button>
+
+    <!-- Oldal szám -->
+    <span class="fw-bold">{{ currentPage }} / {{ totalPages }}</span>
+
+    <!-- Következő gomb -->
+    <button class="btn btn-outline-primary" 
+            (click)="nextPage()" 
+            [disabled]="currentPage === totalPages">
+      Következő <i class="bi bi-chevron-right"></i>
+    </button>
+
+  </div>
+
+</div>
