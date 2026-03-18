@@ -1,0 +1,59 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ghcr.io/${{ github.repository_owner }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # 1. Kód letöltése
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Docker Buildx beállítása
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 3. Bejelentkezés a GitHub Container Registry-be
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # 4. Backend image build és push
+      - name: Build and push backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend/Webshop.API
+          push: true
+          tags: ${{ env.IMAGE_PREFIX }}/webshop-backend:latest
+
+      # 5. Frontend image build és push
+      - name: Build and push frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: ${{ env.IMAGE_PREFIX }}/webshop-frontend:latest
+
+      # 6. MCP szerver image build és push
+      - name: Build and push mcp-server
+        uses: docker/build-push-action@v5
+        with:
+          context: ./mcp-server
+          push: true
+          tags: ${{ env.IMAGE_PREFIX }}/webshop-mcp-server:latest
