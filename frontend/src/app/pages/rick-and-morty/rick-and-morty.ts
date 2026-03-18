@@ -40,18 +40,19 @@ export class RickAndMorty implements OnInit {
   }
 
   // Következő oldal
-  nextPage(): void {
+ nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.loadCharacters();
+      setTimeout(() => this.loadCharacters(), 500);
     }
   }
 
   // Előző oldal
+
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.loadCharacters();
+      setTimeout(() => this.loadCharacters(), 500);
     }
   }
 

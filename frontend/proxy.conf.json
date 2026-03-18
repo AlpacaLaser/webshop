@@ -1,0 +1,10 @@
+{
+  "/rickandmorty": {
+    "target": "https://rickandmortyapi.com",
+    "changeOrigin": true,
+    "secure": true,
+    "pathRewrite": {
+      "^/rickandmorty": ""
+    }
+  }
+}
