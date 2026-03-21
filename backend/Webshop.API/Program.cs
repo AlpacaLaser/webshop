@@ -4,10 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<ProductService>();
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi();
 
-// CORS — engedélyezzük az összes localhost portot
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>
@@ -21,8 +19,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.MapOpenApi();
 app.UseCors("AllowAngular");
 app.UseAuthorization();
 app.MapControllers();

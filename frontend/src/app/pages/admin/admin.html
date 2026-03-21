@@ -1,0 +1,124 @@
+<div class="container mt-4">
+
+  <h1><i class="bi bi-gear"></i> Admin felület</h1>
+
+  <!-- Új termék hozzáadása -->
+  <div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0"><i class="bi bi-plus-circle"></i> Új termék</h5>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Név</label>
+          <input type="text" class="form-control" [(ngModel)]="newProduct.name" placeholder="Termék neve">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Kategória</label>
+          <input type="text" class="form-control" [(ngModel)]="newProduct.category" placeholder="Kategória">
+        </div>
+        <div class="col-md-12">
+          <label class="form-label">Leírás</label>
+          <textarea class="form-control" [(ngModel)]="newProduct.description" placeholder="Leírás"></textarea>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Ár (Ft)</label>
+          <input type="number" class="form-control" [(ngModel)]="newProduct.price">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Készlet</label>
+          <input type="number" class="form-control" [(ngModel)]="newProduct.stock">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Kép URL</label>
+          <input type="text" class="form-control" [(ngModel)]="newProduct.imageUrl" placeholder="https://...">
+        </div>
+        <div class="col-12">
+          <button class="btn btn-primary" (click)="createProduct()">
+            <i class="bi bi-save"></i> Mentés
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Termékek listája -->
+  <div class="card">
+    <div class="card-header bg-dark text-white">
+      <h5 class="mb-0"><i class="bi bi-list"></i> Termékek</h5>
+    </div>
+    <div class="card-body p-0">
+      @if (isLoading) {
+        <div class="text-center py-4">
+          <div class="spinner-border text-primary"></div>
+        </div>
+      }
+      @if (!isLoading) {
+        <table class="table table-hover mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th>Kép</th>
+              <th>Név</th>
+              <th>Kategória</th>
+              <th>Ár</th>
+              <th>Készlet</th>
+              <th>Műveletek</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of products; track product.id) {
+              @if (editingProduct?.id === product.id) {
+                <!-- Szerkesztés mód -->
+                <tr class="table-warning">
+                  <td>
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="editingProduct!.imageUrl">
+                  </td>
+                  <td>
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="editingProduct!.name">
+                  </td>
+                  <td>
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="editingProduct!.category">
+                  </td>
+                  <td>
+                    <input type="number" class="form-control form-control-sm" [(ngModel)]="editingProduct!.price">
+                  </td>
+                  <td>
+                    <input type="number" class="form-control form-control-sm" [(ngModel)]="editingProduct!.stock">
+                  </td>
+                  <td>
+                    <button class="btn btn-success btn-sm me-1" (click)="saveEdit()">
+                      <i class="bi bi-check"></i>
+                    </button>
+                    <button class="btn btn-secondary btn-sm" (click)="cancelEdit()">
+                      <i class="bi bi-x"></i>
+                    </button>
+                  </td>
+                </tr>
+              } @else {
+                <!-- Normál mód -->
+                <tr>
+                  <td>
+                    <img [src]="product.imageUrl" [alt]="product.name" style="width:50px;height:50px;object-fit:cover;">
+                  </td>
+                  <td>{{ product.name }}</td>
+                  <td><span class="badge bg-secondary">{{ product.category }}</span></td>
+                  <td>{{ product.price | number:'1.0-0' }} Ft</td>
+                  <td>{{ product.stock }} db</td>
+                  <td>
+                    <button class="btn btn-warning btn-sm me-1" (click)="startEdit(product)">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.id!)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  </div>
+
+</div>
